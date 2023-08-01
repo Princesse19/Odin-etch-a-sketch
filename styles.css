@@ -1,0 +1,75 @@
+body{
+    
+    font-family: Exo;
+    background: linear-gradient(#f3f1f1,#b8b5b5);
+
+}
+
+.title{
+    text-align : center;
+    text-transform: uppercase;
+    color: #444444;
+    text-shadow: 1px 0px 1px #CCCCCC, 0px 1px 1px #a9aef3, 
+2px 1px 1px #CCCCCC, 1px 2px 1px #a9aef3, 
+3px 2px 1px #CCCCCC, 2px 3px 1px #a9aef3, 
+4px 3px 1px #CCCCCC, 3px 4px 1px #a9aef3, 
+5px 4px 1px #CCCCCC, 4px 5px 1px #a9aef3, 
+6px 5px 1px #CCCCCC, 5px 6px 1px #a9aef3, 
+7px 6px 1px #CCCCCC;
+
+}
+.grid{
+    display:grid;
+    width: 500px;
+    height: 500px;
+    background-color:white;
+    border: 90px solid rgb(152, 152, 201);
+    box-shadow: 5px 5px 15px 5px #000000;
+    border-radius: 10%;
+    margin-left: 25%;
+    margin-top: 10px;
+}
+.settings{
+    position: absolute;
+    bottom: 0;
+    left: 35%;
+}
+#colorPicker{
+    background-color: #a9aef3;
+    font-family: arial;
+    font-size: 12px;
+    border-radius: 50%;
+}
+p{
+    font-size: 24px;
+    transition: transform 0.3s ease-in-out;
+    margin-left: 35%;
+    padding-top: 30px;
+}
+button{
+    background-color: #a9aef3;
+    font-family: arial;
+    font-size: 14px;
+    border-radius: 40%;
+    padding: 5px;
+}
+.grid-element {
+    user-select: none;
+  }
+  button:hover,
+input[type='color']:hover {
+  transform: scale(1.05);
+}
+button.active {
+    background-color: #a9aef3;
+    color: #CCCCCC;
+  }
+  button,
+input[type='color'] {
+  transition: transform 0.1s ease-in-out;
+}
+.size-value {
+    margin-bottom: -5px;
+    font-size: 15px;
+  }
+  

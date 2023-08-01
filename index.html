@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-a-sketch</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/8fee40d627.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header id="header">
+        <h1 class="title">Etch-a-sketch</h1>
+    </header>
+    <main class="main">
+        <div id="grid" class="grid"></div>
+        <div id="settings"  class="settings">
+            <input type="color" id="colorPicker" name="pen" value="#333333" />
+            <button id="colorBtn">Colors</button>
+            <button id="rainbowBtn">Rainbow</button>
+            <button id="eraserBtn">Eraser</button>
+            <button id="clearBtn">Clear</button>
+            <div id="sizeValue" class="size-value">16 x 16</div>
+            <input id="sizeSlider" type="range" value="16" min="4" max="80" />
+        </div>
+    </main>
+    <footer class="footer">
+        <p>
+            Copyright @
+            <script>
+                document.write(new Date().getFullYear())
+            </script>
+            princesse19
+            <a href="https://github.com/Princesse19" target="_blank"><i class="fa-brands fa-github" style="color: #010813;"></i></a>
+        </p>
+    </footer>
+    <script>
+        const DEFAULT_COLOR = '#333333';
+        const DEFAULT_MODE = 'color';
+        const DEFAULT_SIZE = '16';
+
+        let currentColor = DEFAULT_COLOR;
+        let currentMode = DEFAULT_MODE;
+        let currentSize = DEFAULT_SIZE;
+        let mouseDown = false;
+
+        function setCurrentColor(newColor){
+            currentColor = newColor;
+        }
+
+        function setCurrentMode(newMode) {
+            activateButton(newMode);
+            currentMode = newMode;
+        }
+
+        function setCurrentSize(newSize){
+            currentSize = newSize;
+        }
+
+        function setupGrid(size) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+            grid.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+
+            for (let i = 0; i < size * size; i++) {
+                const gridElement = document.createElement('div');
+                gridElement.classList.add('grid-element');
+                gridElement.addEventListener('mouseover', changeColor);
+                gridElement.addEventListener('mousedown', () => (mouseDown = true));
+                gridElement.addEventListener('mouseup', () => (mouseDown = false));
+                grid.appendChild(gridElement);
+            }
+        }
+
+        function changeSize(value) {
+            setCurrentSize(value);
+            updateSizeValue(value);
+            reloadGrid();
+        }
+
+        function updateSizeValue(value) {
+            const sizeValue = document.getElementById('sizeValue');
+            sizeValue.innerHTML = `${value} x ${value}`;
+        }
+
+        function reloadGrid() {
+            clearGrid();
+            setupGrid(currentSize);
+        }
+
+        function clearGrid() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+        }
+
+        function changeColor(e) {
+            if (e.type === 'mouseover' && !mouseDown) return;
+            if (currentMode === 'rainbow') {
+                const randomR = Math.floor(Math.random() * 256);
+                const randomG = Math.floor(Math.random() * 256);
+                const randomB = Math.floor(Math.random() * 256);
+                e.target.style.backgroundColor = `rgb(${randomR}, ${randomG}, ${randomB})`;
+            } else if (currentMode === 'color') {
+                e.target.style.backgroundColor = currentColor;
+            } else if (currentMode === 'eraser') {
+                e.target.style.backgroundColor = '#fefefe';
+            }
+        }
+
+        function activateButton(newMode) {
+            const colorBtn = document.getElementById('colorBtn');
+            const rainbowBtn = document.getElementById('rainbowBtn');
+            const eraserBtn = document.getElementById('eraserBtn');
+
+            if (currentMode === 'rainbow') {
+                rainbowBtn.classList.remove('active');
+            } else if (currentMode === 'color') {
+                colorBtn.classList.remove('active');
+            } else if (currentMode === 'eraser') {
+                eraserBtn.classList.remove('active');
+            }
+
+            if (newMode === 'rainbow') {
+                rainbowBtn.classList.add('active');
+            } else if (newMode === 'color') {
+                colorBtn.classList.add('active');
+            } else if (newMode === 'eraser') {
+                eraserBtn.classList.add('active');
+            }
+        }
+
+        window.onload = () => {
+            setupGrid(DEFAULT_SIZE);
+            activateButton(DEFAULT_MODE);
+
+            const colorPicker = document.getElementById('colorPicker');
+            const colorBtn = document.getElementById('colorBtn');
+            const rainbowBtn = document.getElementById('rainbowBtn');
+            const eraserBtn = document.getElementById('eraserBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const sizeSlider = document.getElementById('sizeSlider');
+
+            colorPicker.oninput = (e) => setCurrentColor(e.target.value);
+            colorBtn.onclick = () => setCurrentMode('color');
+            rainbowBtn.onclick = () => setCurrentMode('rainbow');
+            eraserBtn.onclick = () => setCurrentMode('eraser');
+            clearBtn.onclick = () => reloadGrid();
+            sizeSlider.oninput = (e) => updateSizeValue(e.target.value);
+            sizeSlider.onchange = (e) => changeSize(e.target.value);
+        };
+    </script>
+</body>
+</html>
